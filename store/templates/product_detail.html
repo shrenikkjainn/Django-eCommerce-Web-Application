@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container page-content">
+    <div class="product-detail-grid">
+
+        <div class="product-gallery">
+            <div class="gallery-main">
+                <img src="{{ product.image.url }}">
+            </div>
+        </div>
+
+        <div class="product-info">
+            <h1>{{ product.name }}</h1>
+
+            <div class="price-section">
+                <span class="big-price">₹{{ product.price }}</span>
+            </div>
+
+            <div class="product-description">
+                <h3>Description</h3>
+                <p>{{ product.description|linebreaksbr }}</p>
+            </div>
+
+            <div class="product-actions">
+                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">
+                    Add to Cart
+                </a>
+
+                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-secondary">Buy Now</a>
+                <a href="{% url 'toggle_wishlist' product.id %}" class="btn btn-wishlist">
+                    {% if product in user_wishlist %}
+                    <i class="fa fa-heart"></i> Remove from Wishlist
+                    {% else %}
+                    <i class="fa fa-heart"></i> Add to Wishlist
+                    {% endif %}
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+</div>  <!-- product-detail-grid -->
+</div>  <!-- container page-content -->
+
+{% endblock %}

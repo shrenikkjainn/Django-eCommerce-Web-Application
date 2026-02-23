@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="payment-page">
+    <div class="payment-card">
+
+        {% if status == "Success" %}
+        <div class="payment-icon success">
+            <i class="fa fa-check"></i>
+        </div>
+        <h2>Payment Successful!</h2>
+        {% else %}
+        <div class="payment-icon fail">
+            <i class="fa fa-times"></i>
+        </div>
+        <h2>Payment Failed</h2>
+        {% endif %}
+
+        <div class="payment-details">
+            <div class="detail-row">
+                <span class="label">Order ID</span>
+                <span class="value">#{{ order.id }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="label">Total Paid</span>
+                <span class="value">₹{{ order.total_amount }}</span>
+            </div>
+        </div>
+
+        <a href="{% url 'products' %}" class="btn btn-primary">
+            Continue Shopping
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="page-banner">
+    <div class="container">
+        <h1>All Products</h1>
+        <p>Browse our collection</p>
+    </div>
+</div>
+
+<div class="container page-content">
+    <div class="products-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <div class="product-img-wrap">
+                <img src="{{ product.image.url }}">
+            </div>
+
+            <div class="product-body">
+                <div class="product-name">
+                    {{ product.name }}
+                </div>
+
+                <div class="product-price">
+                    <div class="price-current">₹{{ product.price }}</div>
+                </div>
+
+                <a href="{% url 'product_detail' product.id %}" class="btn-add-cart">
+                    View Product
+                </a>
+                <a href="{% url 'toggle_wishlist' product.id %}" class="product-wishlist-btn
+    {% if product in user_wishlist %}active{% endif %}">
+    <i class="fa fa-heart"></i>
+</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

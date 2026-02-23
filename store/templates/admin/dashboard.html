@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="page-banner">
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+    </div>
+</div>
+
+<div class="container page-content">
+
+    <div class="d-flex justify-between mb-2">
+        <h3>Products</h3>
+        <a href="{% url 'admin_add_product' %}" class="btn btn-primary btn-sm">
+            Add Product
+        </a>
+    </div>
+
+    <div class="products-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <div class="product-img-wrap">
+                <img src="{{ product.image.url }}">
+            </div>
+
+            <div class="product-body">
+                <div class="product-name">{{ product.name }}</div>
+                <div class="price-current">₹{{ product.price }}</div>
+
+                <a href="{% url 'admin_delete_product' product.id %}"
+                   class="btn btn-danger btn-sm mt-1">
+                    Delete
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <hr class="mt-3 mb-3">
+
+    <h3>Orders</h3>
+
+    {% for order in orders %}
+    <div class="order-card">
+
+        <div class="order-header">
+            <div>Order #{{ order.id }}</div>
+            <div>{{ order.created_at|date:"d M Y" }}</div>
+        </div>
+
+        <div class="order-body">
+            {% for item in order.items.all %}
+            <div class="order-item">
+                <div>{{ item.product.name }} (x{{ item.quantity }})</div>
+                <div>₹{{ item.subtotal }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="order-footer">
+            <div>Total: ₹{{ order.total_amount }}</div>
+
+<form method="POST"
+      action="{% url 'admin_update_order_status' order.id %}"
+      style="display:flex; gap:8px; align-items:center;">
+    {% csrf_token %}
+
+    <select name="status" class="form-control" style="width:150px;">
+        <option value="Processing"
+            {% if order.status == "Processing" %}selected{% endif %}>
+            Processing
+        </option>
+
+        <option value="Shipped"
+            {% if order.status == "Shipped" %}selected{% endif %}>
+            Shipped
+        </option>
+
+        <option value="Delivered"
+            {% if order.status == "Delivered" %}selected{% endif %}>
+            Delivered
+        </option>
+
+        <option value="Cancelled"
+            {% if order.status == "Cancelled" %}selected{% endif %}>
+            Cancelled
+        </option>
+    </select>
+
+    <button type="submit" class="btn btn-primary btn-sm">
+        Update
+    </button>
+</form>
+        </div>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="page-banner">
+    <div class="container">
+        <h1>Your Cart</h1>
+        <p>Review your selected products</p>
+    </div>
+</div>
+
+<div class="container page-content">
+
+    {% if items %}
+
+    <div class="cart-layout">
+
+        <!-- LEFT SIDE - CART ITEMS -->
+        <div>
+
+            {% for item in items %}
+            <div class="cart-item">
+
+                <!-- Product Image -->
+                <div class="cart-item-img">
+                    <img src="{{ item.product.image.url }}">
+                </div>
+
+                <!-- Product Details -->
+                <div class="cart-item-details">
+
+                    <div class="cart-item-name">
+                        {{ item.product.name }}
+                    </div>
+
+                    <div class="cart-item-meta">
+                        Price: ₹{{ item.product.price }}
+                    </div>
+
+                    <div class="cart-item-actions">
+
+                        <!-- Quantity Selector -->
+                        <div class="qty-selector">
+                            <a href="{% url 'update_cart_quantity' item.id 'decrease' %}" class="qty-btn">-</a>
+
+                            <input type="text" value="{{ item.quantity }}" class="qty-display" readonly>
+
+                            <a href="{% url 'update_cart_quantity' item.id 'increase' %}" class="qty-btn">+</a>
+                        </div>
+
+                        <!-- Remove Button -->
+                        <a href="{% url 'remove_from_cart' item.id %}" class="cart-item-remove">
+                            <i class="fa fa-trash"></i> Remove
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <!-- Subtotal -->
+                <div class="cart-item-price">
+                    ₹{{ item.subtotal }}
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <!-- RIGHT SIDE - ORDER SUMMARY -->
+        <div class="card cart-summary-card">
+            <div class="card-body">
+
+                <h3 class="card-title">Order Summary</h3>
+
+                <div class="summary-row">
+                    <span>Items</span>
+                    <span>{{ items|length }}</span>
+                </div>
+
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span>₹{{ total }}</span>
+                </div>
+
+                <a href="{% url 'checkout' %}" class="btn btn-primary btn-block mt-2">
+                    Proceed to Checkout
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+
+    {% else %}
+
+    <!-- EMPTY CART -->
+    <div class="cart-empty">
+        <div class="cart-empty-icon">
+            <i class="fa fa-shopping-cart"></i>
+        </div>
+        <h3>Your cart is empty</h3>
+        <p class="text-muted">Looks like you haven't added anything yet.</p>
+
+        <a href="{% url 'products' %}" class="btn btn-primary">
+            Continue Shopping
+        </a>
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
